@@ -67,7 +67,8 @@ public class LazyUserDataModel extends LazyDataModel<User> implements Serializab
     @Override
 	public List<User> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
     	  List<User> data = new ArrayList<User>();
-    	  datasource = crudService.findWithNamedQuery(User.ALL, first, first + pageSize);
+    	  datasource = crudService.findWithNamedQuery(User.ALL);
+    	  
     	//filter
         for(User userT : datasource) {
             boolean match = true;
@@ -87,7 +88,6 @@ public class LazyUserDataModel extends LazyDataModel<User> implements Serializab
                             break;
                         }
                     } catch(Exception e) {
-                    	System.out.println("exception");
                     	e.printStackTrace();
                         match = false;
                     }
@@ -104,8 +104,22 @@ public class LazyUserDataModel extends LazyDataModel<User> implements Serializab
             Collections.sort(data, new LazySorter(sortField, sortOrder));  
         } 
         
-        setRowCount(crudService.countTotalRecord(User.TOTAL));   
-        return data;
+        int dataSize = data.size();
+        this.setRowCount(dataSize);
+        
+        //paginate
+        if(dataSize > pageSize) {
+            try {
+                return data.subList(first, first + pageSize);
+            }
+            catch(IndexOutOfBoundsException e) {
+                return data.subList(first, first + (dataSize % pageSize));
+            }
+        }
+        else {
+            return data;
+        }
+        
 	}
 
 	/**

@@ -5,8 +5,8 @@
 	<persistence-unit name="example" transaction-type="JTA">
 	
 		
-<!-- 		<provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>  -->
-		<provider>org.hibernate.ejb.HibernatePersistence</provider>
+		<provider>org.eclipse.persistence.jpa.PersistenceProvider</provider> 
+<!-- 		<provider>org.hibernate.ejb.HibernatePersistence</provider> -->
 		
 		<jta-data-source>java:/socialnwMySQL</jta-data-source>
 		<exclude-unlisted-classes>false</exclude-unlisted-classes>
