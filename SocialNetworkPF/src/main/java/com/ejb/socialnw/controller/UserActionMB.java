@@ -36,7 +36,7 @@ import com.ejb.socialnw.util.DateUtility;
 import com.ejb.socialnw.util.LazyMessageDataModel;
  
 /**
- * Message Controller class allows CRUD operations with messages,comments and it's media,
+ * Action Controller class allows CRUD operations with messages,comments and it's media,
  * add/remove friends
  * 
  * @author Andrei Bykov
