@@ -19,7 +19,7 @@ Here we walk through the entire content of the application.
 - New user registration.
 - Authorization and authentication with JBoss JAAS DatabaseServerLoginModule.
 - The roles(Admin/User) privileges .
-- Searching users(including autocomplite search).
+- Searching users.
 - Ability to change user settings.
 - Ability to add/remove friends.
 - Ability to add/remove messages on your own and other users pages(images,audio).
