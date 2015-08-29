@@ -2,6 +2,7 @@ package com.ejb.socialnw.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Lob;
 import javax.persistence.Table;
 
 
@@ -23,7 +24,8 @@ public class Media extends BaseEntity {
 	@Column(length = 50)
 	private String fileName;
 	
-	@Column
+	@Lob
+	@Column(length=500000)
 	private byte[] media;
 	
 	/**
@@ -83,10 +85,8 @@ public class Media extends BaseEntity {
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
-		result = prime * result
-				+ ((contentType == null) ? 0 : contentType.hashCode());
-		result = prime * result
-				+ ((fileName == null) ? 0 : fileName.hashCode());
+		result = prime * result	+ ((contentType == null) ? 0 : contentType.hashCode());
+		result = prime * result	+ ((fileName == null) ? 0 : fileName.hashCode());
 		return result;
 	}
 

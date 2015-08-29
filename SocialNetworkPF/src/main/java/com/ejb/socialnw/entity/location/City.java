@@ -112,8 +112,7 @@ public class City extends BaseEntity {
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
-		result = prime * result
-				+ ((cityName == null) ? 0 : cityName.hashCode());
+		result = prime * result	+ ((cityName == null) ? 0 : cityName.hashCode());
 		return result;
 	}
 

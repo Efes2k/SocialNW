@@ -112,15 +112,15 @@ public class Comment extends BaseEntity {
 		this.messageWhere = messageWhere;
 	}
 
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
+		result = prime * result + ((author == null) ? 0 : author.hashCode());
+		result = prime * result + ((date == null) ? 0 : date.hashCode());
 		result = prime * result + ((text == null) ? 0 : text.hashCode());
 		return result;
 	}
-	
 
 	@Override
 	public boolean equals(Object obj) {
@@ -131,6 +131,16 @@ public class Comment extends BaseEntity {
 		if (getClass() != obj.getClass())
 			return false;
 		Comment other = (Comment) obj;
+		if (author == null) {
+			if (other.author != null)
+				return false;
+		} else if (!author.equals(other.author))
+			return false;
+		if (date == null) {
+			if (other.date != null)
+				return false;
+		} else if (!date.equals(other.date))
+			return false;
 		if (text == null) {
 			if (other.text != null)
 				return false;
@@ -138,5 +148,8 @@ public class Comment extends BaseEntity {
 			return false;
 		return true;
 	}
+
+
+
 	
 }

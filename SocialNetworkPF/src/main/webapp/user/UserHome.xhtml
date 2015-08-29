@@ -245,6 +245,7 @@
 													<p:commandButton icon="ui-icon-closethick"
 																 	 style="float:right" 
 																 	 type="submit"
+																 	 rendered="#{userActionMB.visitedUser.username == currentUser.username || currentUser.username == comment.author.username}"
 																 	 actionListener="#{userActionMB.doDeleteComment}"
 																	 update=":messages:dataTable:message" >
 	

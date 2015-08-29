@@ -329,19 +329,14 @@ public class User extends BaseEntity implements Serializable {
 		final int prime = 31;
 		int result = super.hashCode();
 		result = prime * result + ((address == null) ? 0 : address.hashCode());
-		result = prime * result
-				+ ((dateOfBirth == null) ? 0 : dateOfBirth.hashCode());
+		result = prime * result	+ ((dateOfBirth == null) ? 0 : dateOfBirth.hashCode());
 		result = prime * result + ((email == null) ? 0 : email.hashCode());
-		result = prime * result
-				+ ((firstName == null) ? 0 : firstName.hashCode());
-		result = prime * result
-				+ ((lastName == null) ? 0 : lastName.hashCode());
-		result = prime * result
-				+ ((password == null) ? 0 : password.hashCode());
+		result = prime * result	+ ((firstName == null) ? 0 : firstName.hashCode());
+		result = prime * result	+ ((lastName == null) ? 0 : lastName.hashCode());
+		result = prime * result	+ ((password == null) ? 0 : password.hashCode());
 		result = prime * result + phoneNumber;
 		result = prime * result + ((roles == null) ? 0 : roles.hashCode());
-		result = prime * result
-				+ ((username == null) ? 0 : username.hashCode());
+		result = prime * result	+ ((username == null) ? 0 : username.hashCode());
 		return result;
 	}
 

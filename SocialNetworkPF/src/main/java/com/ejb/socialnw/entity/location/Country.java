@@ -86,8 +86,7 @@ public class Country extends BaseEntity{
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
-		result = prime * result
-				+ ((countryName == null) ? 0 : countryName.hashCode());
+		result = prime * result	+ ((countryName == null) ? 0 : countryName.hashCode());
 		return result;
 	}
 

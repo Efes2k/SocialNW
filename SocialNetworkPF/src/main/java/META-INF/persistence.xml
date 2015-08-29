@@ -5,8 +5,8 @@
 	<persistence-unit name="example" transaction-type="JTA">
 	
 		
-		<provider>org.eclipse.persistence.jpa.PersistenceProvider</provider> 
-<!-- 		<provider>org.hibernate.ejb.HibernatePersistence</provider> -->
+<!-- 		<provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>  -->
+		<provider>org.hibernate.ejb.HibernatePersistence</provider>
 		
 		<jta-data-source>java:/socialnwMySQL</jta-data-source>
 		<exclude-unlisted-classes>false</exclude-unlisted-classes>
@@ -14,7 +14,7 @@
             <!-- Hibernate -->
             <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" />
             <property name="hibernate.show_sql" value="true" />
-            <property name="hibernate.hbm2ddl.auto" value="update" />
+            <property name="hibernate.hbm2ddl.auto" value="create" />
              
             <!-- EclipseLink  -->
             <property name="eclipselink.ddl-generation" value="create-tables" />
