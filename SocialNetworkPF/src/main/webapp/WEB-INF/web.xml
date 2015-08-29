@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
+  <display-name>SocialNetworkPF</display-name>
+  
+    <context-param>
+        <param-name>primefaces.THEME</param-name>
+        <param-value>afterdark</param-value>
+    </context-param>
+	<context-param>
+	   <param-name>primefaces.UPLOADER</param-name>
+	   <param-value>commons</param-value>
+	</context-param>
+	<context-param>
+		<param-name>com.ocpsoft.pretty.DEVELOPMENT</param-name>
+		<param-value>true</param-value>
+	</context-param>
+	
+	<!-- Faces Servlet -->
+    <servlet>
+        <servlet-name>Faces Servlet</servlet-name>
+        <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Faces Servlet</servlet-name>
+        <url-pattern>*.xhtml</url-pattern>
+    </servlet-mapping>
+    <welcome-file-list>
+        <welcome-file>Login.xhtml</welcome-file>
+    </welcome-file-list>
+    
+    <!-- Security configuration -->
+    <security-constraint>
+        <display-name>Administrator</display-name>
+        <web-resource-collection>
+            <web-resource-name>Admin Area</web-resource-name>
+            <description/>
+            <url-pattern>/admin/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <description>Administrator</description>
+            <role-name>Administrator</role-name>
+        </auth-constraint>
+    </security-constraint>
+    <security-constraint>
+        <display-name>User</display-name>
+        <web-resource-collection>
+            <web-resource-name>User Operations</web-resource-name>
+            <description/>
+            <url-pattern>/user/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <description>User</description>
+            <role-name>Administrator</role-name>
+            <role-name>User</role-name>
+        </auth-constraint>
+    </security-constraint>
+    <login-config>
+        <auth-method>FORM</auth-method>
+        <realm-name>socialnwMySQLRealm</realm-name>
+        <form-login-config>
+            <form-login-page>/Login.xhtml</form-login-page>
+            <form-error-page>/Login.xhtml</form-error-page>
+        </form-login-config>
+    </login-config>
+    <security-role>
+        <role-name>Administrator</role-name>
+    </security-role>
+    <security-role>
+        <role-name>User</role-name>
+    </security-role>
+    <error-page>
+        <error-code>403</error-code>
+        <location>/ErrorAccessDenied.xhtml</location>
+    </error-page>
+    <error-page>
+        <exception-type>javax.faces.application.ViewExpiredException</exception-type>
+        <location>/Login.xhtml</location>
+    </error-page>
+    
+    
+    
+    
+<!--       Transaction filter -->
+<!-- 	<filter> -->
+<!--         <filter-name>ConnectionFilter</filter-name> -->
+<!--         <filter-class>com.ejb.socialnw.filter.ConnectionFilter</filter-class> -->
+<!--     </filter> -->
+<!--     <filter-mapping> -->
+<!--         <filter-name>ConnectionFilter</filter-name> -->
+<!--         <url-pattern>/*</url-pattern> -->
+<!--     </filter-mapping> -->
+    
+     <!-- Upload filter configuration -->
+    <filter>
+        <filter-name>PrimeFaces FileUpload Filter</filter-name>
+        <filter-class>org.primefaces.webapp.filter.FileUploadFilter</filter-class>
+        <init-param>
+            <param-name>thresholdSize</param-name>
+            <param-value>51200</param-value>
+        </init-param>
+    </filter>
+    
+    <filter-mapping>
+        <filter-name>PrimeFaces FileUpload Filter</filter-name>
+        <servlet-name>Faces Servlet</servlet-name>
+        <dispatcher>REQUEST</dispatcher>              
+    	<dispatcher>FORWARD</dispatcher>    
+    </filter-mapping>
+
+
+	
+	  <!-- PrettyFaces filter -->
+	<filter>
+		<filter-name>Pretty Filter</filter-name>
+		<filter-class>com.ocpsoft.pretty.PrettyFilter</filter-class>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>Pretty Filter</filter-name>
+		<url-pattern>/*</url-pattern>
+		<dispatcher>FORWARD</dispatcher>
+		<dispatcher>REQUEST</dispatcher>
+		<dispatcher>ERROR</dispatcher>
+	</filter-mapping>
+
+ 	 <!-- Login filter -->
+	<filter>
+        <filter-name>LoginPageFilter</filter-name>
+        <filter-class>com.ejb.socialnw.filter.LoginPageFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>LoginPageFilter</filter-name>
+        <url-pattern>/Login.xhtml</url-pattern>
+    </filter-mapping>
+    
+  
+    
+</web-app>

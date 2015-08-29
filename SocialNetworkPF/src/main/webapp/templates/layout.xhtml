@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en"
+     xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:ui="http://java.sun.com/jsf/facelets"
+     xmlns:p="http://primefaces.org/ui"
+>
+    <h:head>
+        <title>Title</title>
+        <h:outputStylesheet library="css" name="default.css"  />
+    </h:head>
+    <h:body>
+        <p:layout fullPage="true">
+        
+            <p:layoutUnit position="north" size="100"  resizable="false" closable="false" collapsible="false" >
+               <ui:include src="../templates/tiles/TopMenu.xhtml" />
+            </p:layoutUnit>
+
+            <p:layoutUnit position="west" size="300" resizable="false" closable="false" collapsible="false" >
+                    <ui:include src="../templates/tiles/LeftMenu.xhtml" />
+            </p:layoutUnit>
+
+            <p:layoutUnit position="east" size="300" header="Friends" resizable="false" closable="false" collapsible="false" effect="drop">
+             	  <ui:include src="../templates/tiles/RightMenu.xhtml" />
+            </p:layoutUnit>
+
+            <p:layoutUnit position="center">
+                <ui:insert name="content">Put default content here, if any.</ui:insert>
+            </p:layoutUnit>
+            
+        </p:layout>
+    </h:body>
+</html>

@@ -1,0 +1,146 @@
+<ui:composition template="/templates/layout.xhtml"
+				xmlns="http://www.w3.org/1999/xhtml"
+				xmlns:f="http://java.sun.com/jsf/core"
+				xmlns:h="http://java.sun.com/jsf/html"
+				xmlns:ui="http://java.sun.com/jsf/facelets"
+				xmlns:c="http://java.sun.com/jsp/jstl/core"
+				xmlns:p="http://primefaces.org/ui">
+	
+	<ui:define name="content">
+		<h:body>
+			<p:tabView >
+			 <p:messages id="messageSettingChanged" style="width:" />
+			 
+<!-- 			 			User information setting tab -->
+			 
+				<p:tab title="Settings">
+					<h:form id="userDetailForm">
+						<p:panelGrid id="display" 
+									 columns="2" cellpadding="4"
+									 style="margin:0 auto;width:600px;"	>
+									 
+							<f:facet name="header">
+								<h:outputText value="User Information"></h:outputText>
+							</f:facet>
+
+							<h:outputText value="Username :"></h:outputText>
+							<h:outputText value="#{userMB.userToChange.username}" />
+
+							<h:outputText value="First name :"></h:outputText>
+							<h:inputText value="#{userMB.userToChange.firstName}"
+										 required="true" requiredMessage="Please Enter Name!" />
+
+							<h:outputText value="Last name :"></h:outputText>
+							<h:inputText value="#{userMB.userToChange.lastName}"
+									     required="true" requiredMessage="Please Enter Lastname!" />
+
+							<h:outputText value="Email :"></h:outputText>
+							<h:inputText value="#{userMB.userToChange.email}"
+										 styleClass="l-align" />
+
+							<h:outputText value="Street Name :"></h:outputText>
+							<h:inputText value="#{userMB.userToChange.address.street}" />
+
+							<h:outputText value="Suburb :"></h:outputText>
+							<h:inputText value="#{userMB.userToChange.address.suburb}" />
+
+							<h:outputText value="Country :"></h:outputText>
+							<p:selectOneMenu id="country" 
+											 value="#{userRegistrationMB.country}"
+											 style="width:150px" 
+											 converter="omnifaces.SelectItemsConverter"
+											 effect="fold">
+											 
+								<p:ajax listener="#{userRegistrationMB.changeCountry}" update="city" />
+								<f:selectItem itemLabel="Select Country"
+										      itemValue="#{userMB.userToChange.address.city.countryIn}"
+											  noSelectionOption="true" />
+											  
+								<f:selectItems value="#{userRegistrationMB.countries}" />
+							</p:selectOneMenu>
+
+							<p:outputLabel for="city" value="City: " />
+							<p:selectOneMenu id="city"
+											 value="#{userMB.userToChange.address.city}"
+											 style="width:150px" 
+											 effect="fold"
+											 required="true"			 >
+											 
+								<f:selectItem itemLabel="Select City"
+								  			  itemValue="#{userMB.userToChange.address.city}"
+											  noSelectionOption="true"
+											  
+											   />
+								<f:converter converterId="com.ejb.socialnw.util.CityConverter" />			  
+								<f:selectItems value="#{userRegistrationMB.cities}" />
+							</p:selectOneMenu>
+
+							
+							<f:facet name="footer">
+									<p:commandButton value="Update" 
+												     update="@form :growl"
+													 oncomplete="handleSubmitRequest(xhr, status, args, 'userDlg','newUserForm');"
+												     actionListener="#{userMB.doUpdateUser}"
+												     ajax="true" />
+							</f:facet>
+						</p:panelGrid>
+					</h:form>
+				</p:tab>
+
+<!-- 			 			User avatar setting tab -->
+
+				<p:tab title="Avatar">
+				<p:messages id="messageSettingChanged2" style="width:600px" />
+				 <h:form id="userAvatar" enctype="multipart/form-data" style="margin:0 auto;">
+					<p:panelGrid id="display" columns="2" cellpadding="4"
+								 style="margin:0 auto;">
+						<f:facet name="header">
+							<h:outputText value="User avatar"></h:outputText>
+							<h:outputText value="#{currentUser.avatar.id}"></h:outputText>
+						</f:facet>
+
+						<p:graphicImage value="#{imageStreamerMB.image}" width="150" height="130" id="avatarSetting" cache="false">
+							<f:param name="id" value="#{currentUser.avatar.id}" />
+						</p:graphicImage>
+
+						<f:facet name="footer">
+							<p:fileUpload value="#{userMB.file}" 
+								 		  fileUploadListener="#{userMB.doUpdateUserAvatar}"
+									      style="margin-right:255px;width:600px"
+									      update="@form avatarSetting"
+									      multiple="false"
+									      sizeLimit="10000000" 
+									      allowTypes="/(\.|\/)(gif|jpe?g|png)$/" 
+										  id="fileUpload" 
+										  invalidFileMessage="incorrect file" 
+										  mode="advanced"/>
+						</f:facet>
+					
+					</p:panelGrid>
+				</h:form>
+				</p:tab>
+
+			</p:tabView>
+
+			<p:growl id="growl" life="5000" />
+		</h:body>
+
+<script type="text/javascript">  
+    function handleSubmitRequest(xhr, status, args, dialogName, formName) {  
+            dialog = jQuery('#'+dialogName);
+        if(args.validationFailed) {  
+            dialog.effect("shake", { times:3 }, 100);  
+        } else {
+            clearForm(formName);
+            newUserDialog.hide(); 
+            userDialog.hide(); 
+        }  
+    }
+    function clearForm(formName){
+        jQuery('#'+formName).each(function(){
+	        this.reset();
+	});
+    }
+</script>
+	</ui:define>
+</ui:composition>

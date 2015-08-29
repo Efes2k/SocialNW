@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+				xmlns:f="http://java.sun.com/jsf/core"
+				xmlns:h="http://java.sun.com/jsf/html"
+				xmlns:ui="http://java.sun.com/jsf/facelets"
+				xmlns:p="http://primefaces.org/ui"
+				xmlns:c="http://java.sun.com/jsp/jstl/core">
+<h:head>
+	<title>Title</title>
+</h:head>
+<h:body>
+	<h:form>
+		<p:growl id="messages" />
+		<p:panelGrid columns="1" style="width:100%">
+			<c:if test="#{request.getUserPrincipal() != null}">
+				<ui:repeat var="friends" value="#{currentUser.myFriends}">
+					<h:outputLink value="#{request.contextPath}/user/feed/#{friends.myFriend.username}">
+						 	#{friends.myFriend}
+					 </h:outputLink>
+					<br />
+				</ui:repeat>
+			</c:if>
+		</p:panelGrid>
+	</h:form>
+</h:body>
+</html>

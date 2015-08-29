@@ -1,0 +1,224 @@
+<ui:composition template="/templates/layout.xhtml"
+		        xmlns="http://www.w3.org/1999/xhtml"
+		        xmlns:f="http://java.sun.com/jsf/core"
+		        xmlns:h="http://java.sun.com/jsf/html"
+		        xmlns:ui="http://java.sun.com/jsf/facelets"
+		        xmlns:p="http://primefaces.org/ui">
+		        
+     <ui:define name="content">
+         <h:form id="form">	
+												<!--     Users list datatable -->
+												
+                <p:dataTable id="dataTable" var="user" 
+			                 value="#{userMB.lazyModel}" 
+			                 styleClass="userDataTableStyle"
+	                         paginator="true" rows="10" 
+	                         selection="#{userMB.selectedUsers}"
+	                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+	                         lazy="true" 
+	                         rowsPerPageTemplate="10,15,50">
+	                        
+                <f:facet name="header">
+                    User List
+                </f:facet>  
+                <p:column selectionMode="multiple" style="width:18px" />  
+               
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="ID" />
+                    </f:facet>
+                   <h:outputText value="#{user.id}" />
+                </p:column>
+                
+                <p:column  sortBy="#{user.username}" filterBy="#{user.username}">
+                    <f:facet name="header">
+                        <h:outputText value="Username" />
+                    </f:facet>
+                    <h:outputLink value="#{request.contextPath}/user/feed/#{user.username}">#{user.username}</h:outputLink>
+                </p:column>
+                
+                <p:column sortBy="#{user.firstName}" filterBy="#{user.firstName}">
+                    <f:facet name="header">
+                        <h:outputText value="Firstname" />
+                    </f:facet>
+                    <h:outputText value="#{user.firstName}" />
+                </p:column>
+
+                <p:column sortBy="#{user.lastName}" filterBy="#{user.lastName}">
+                    <f:facet name="header">
+                        <h:outputText value="Lastname" />
+                    </f:facet>
+                    <h:outputText value="#{user.lastName}" />
+                </p:column>
+
+                <p:column sortBy="#{user.email}" filterBy="#{user.email}">
+                    <f:facet name="header">
+                        <h:outputText value="Email" />
+                    </f:facet>
+                    <h:outputText value="#{user.email}" />
+                </p:column>
+                
+                 <p:column sortBy="#{user.dateOfBirth}" >
+                    <f:facet name="header">
+                        <h:outputText value="Date of birth" />
+                    </f:facet>
+                    <h:outputText value="#{user.dateOfBirth}" >
+                    	 <f:convertDateTime pattern="dd.MM.yyyy" />
+                    </h:outputText>
+                </p:column>
+                
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="page" />
+                    </f:facet>
+                     <p:commandLink value="change" update=":userDetailForm:display" onclick="PF('userDialog').show()"  title="View">
+                        <f:setPropertyActionListener value="#{user}" target="#{userMB.userToChange}" />    
+                    </p:commandLink>
+                </p:column>
+                
+               <f:facet name="footer">
+                    <p:commandButton value="New User" onclick="PF('newUserDialog').show()" icon="ui-icon-star" title="Creates new user"/>
+                    <p:commandButton value="Delete Users" actionListener="#{userMB.doDeleteUsers}" update="dataTable" icon="ui-icon-trash"/>
+                </f:facet>
+            </p:dataTable>
+         </h:form>
+
+
+<!-- User detail dialog window -->
+
+		<p:dialog header="User Detail" widgetVar="userDialog"
+			resizable="false" id="userDlg">
+			<h:form id="userDetailForm">
+				<p:panelGrid id="display" columns="2" cellpadding="4"
+					style="margin:0 auto;">
+
+					<h:outputText value="Username :"></h:outputText>
+					<h:inputText value="#{userMB.userToChange.username}" required="true" requiredMessage="Please Enter Name!">
+					</h:inputText>
+
+					<h:outputText value="First name :"></h:outputText>
+					<h:inputText value="#{userMB.userToChange.firstName}" required="true" requiredMessage="Please Enter Name!" />
+
+					<h:outputText value="Last name :"></h:outputText>
+					<h:inputText value="#{userMB.userToChange.lastName}" required="true" requiredMessage="Please Enter Lastname!" />
+
+					<h:outputText value="Email :"></h:outputText>
+					<h:inputText value="#{userMB.userToChange.email}">
+						<f:validator validatorId="com.ejb.socialnw.util.emailValidator" />
+					</h:inputText>
+
+					<h:outputText value="Street Name :"></h:outputText>
+					<h:inputText value="#{userMB.userToChange.address.street}" />
+
+					<h:outputText value="Suburb :"></h:outputText>
+					<h:inputText value="#{userMB.userToChange.address.suburb}" />
+
+					<h:outputText value="Country :"></h:outputText>
+					<p:selectOneMenu id="country" 
+									value="#{userRegistrationMB.country}"
+									style="width:150px" 
+									converter="omnifaces.SelectItemsConverter"
+									effect="fold">
+
+						<p:ajax listener="#{userRegistrationMB.changeCountry}" update="city" />
+						<f:selectItems value="#{userRegistrationMB.countries}" />
+					</p:selectOneMenu>
+
+					<p:outputLabel for="city" value="City: " />
+					<p:selectOneMenu id="city"
+									 value="#{userMB.userToChange.address.city}"
+									 style="width:150px"
+									 effect="fold" required="true" 
+									 requiredMessage="Select city">
+
+						<f:converter converterId="com.ejb.socialnw.util.CityConverter" />
+						<f:selectItems value="#{userRegistrationMB.cities}" />
+					</p:selectOneMenu>
+
+					<f:facet name="footer">
+						<p:commandButton value="Update" 
+										 update=":form:dataTable, :growl"
+										 actionListener="#{userMB.doUpdateUser}" />
+					</f:facet>
+				</p:panelGrid>
+			</h:form>
+		</p:dialog>
+
+
+<!-- New user dialog window -->
+
+		<p:dialog header="Create New User" widgetVar="newUserDialog" resizable="false" id="newUserDlg" > 
+              <h:form id="newUserForm">
+                <p:panelGrid id="displayNewUser" columns="2" cellpadding="4" style="margin:0 auto;">   
+					
+					<h:outputText value="Username *:"></h:outputText>
+                    <p:inputText value="#{userRegistrationMB.newUser.username}" required="true" requiredMessage="Please Enter Username!">
+                    	<f:validator validatorId="com.ejb.socialnw.util.userExist"/>
+                    </p:inputText>
+
+					<h:outputText value="Password *:"></h:outputText>
+                    <p:inputText value="#{userRegistrationMB.newUser.password}" required="true" requiredMessage="Please Enter Password!" maxlength="16" >
+                   		 <f:converter converterId="com.ejb.socialnw.util.SHAConverter"></f:converter>
+                    </p:inputText>
+                    
+					<h:outputText value="First name *:"></h:outputText>
+                    <p:inputText value="#{userRegistrationMB.newUser.firstName}" required="true" requiredMessage="Please Enter Name!" />
+
+					<h:outputText value="Last name *:"></h:outputText>
+                    <p:inputText value="#{userRegistrationMB.newUser.lastName}" required="true" requiredMessage="Please Enter Lastname!" />
+					 
+					<h:outputText value="Phone: " />
+					<p:inputText value="#{userRegistrationMB.newUser.phoneNumber}" />
+					
+					<h:outputText value="Email: *" />
+					<p:inputText value="#{userRegistrationMB.newUser.email}" required="true" label="Email" requiredMessage="Please enter your email address.">
+						  <f:validator validatorId="com.ejb.socialnw.util.emailValidator"/>
+					</p:inputText>
+                        
+					<h:outputText value="Street Name :"></h:outputText>
+					<p:inputText value="#{userRegistrationMB.newUser.address.street}" />
+
+					<h:outputText value="Suburb :"></h:outputText>
+					<p:inputText value="#{userRegistrationMB.newUser.address.suburb}" />
+
+					<p:outputLabel for="country" value="Country: " />
+					<p:selectOneMenu id="country" style="width:150px" 
+									 value="#{userRegistrationMB.country}"	
+									 converter="omnifaces.SelectItemsConverter" 
+									 effect="fold"  required="true">
+										 
+							<p:ajax listener="#{userRegistrationMB.changeCountry}" update="city" />
+							<f:selectItems value="#{userRegistrationMB.countries}" />
+					</p:selectOneMenu>
+
+					<p:outputLabel for="city" value="City: " />
+					<p:selectOneMenu id="city" style="width:150px"
+						 			 value="#{userRegistrationMB.newUser.address.city}"  
+						 			 required="true" effect="fold"
+						 			 requiredMessage="Please enter city"	 >
+							
+							<f:selectItems value="#{userRegistrationMB.cities}"  />
+							<f:converter converterId="com.ejb.socialnw.util.CityConverter" />
+					</p:selectOneMenu>
+					
+					<h:outputText value="Date of birth: *" />
+						<p:calendar value="#{userRegistrationMB.newUser.dateOfBirth}" 
+									showOn="button" 
+									required="true" 
+									label="Date of birth" 
+									requiredMessage="Please enter date of birth" 
+									yearRange="c-100:c" 
+									navigator="true" />
+									
+                    <f:facet name="footer">
+                            <p:commandButton value="Submit" update=":form:dataTable, :growl" actionListener="#{userRegistrationMB.doCreateUser}"/>
+                            <p:commandButton type="reset" value="Reset"> </p:commandButton>                            
+                    </f:facet>
+                </p:panelGrid>  
+              </h:form>
+          </p:dialog> 
+      
+		<p:growl id="growl" life="5000" />
+
+     </ui:define>
+</ui:composition>

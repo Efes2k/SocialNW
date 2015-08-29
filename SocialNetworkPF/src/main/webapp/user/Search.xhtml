@@ -1,0 +1,127 @@
+<ui:composition template="/templates/layout.xhtml"
+		        xmlns="http://www.w3.org/1999/xhtml"
+		        xmlns:f="http://java.sun.com/jsf/core"
+		        xmlns:h="http://java.sun.com/jsf/html"
+		        xmlns:ui="http://java.sun.com/jsf/facelets"
+		        xmlns:p="http://primefaces.org/ui"
+		        xmlns:c="http://java.sun.com/jsp/jstl/core"
+>
+     <ui:define name="content">
+        <h:form id="form">
+        
+<!--  Users search datatable -->
+
+           <p:dataTable id="dataTable" lazy="true"
+			            var="user"  rows="10" 
+			            value="#{userMB.lazyModel}" 
+			            styleClass="userDataTableStyle"
+                        paginator="true"
+                        selection="#{userMB.selectedUsers}"
+                        paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                        rowsPerPageTemplate="10,15,50">
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Avatar" />
+					</f:facet>
+							<p:graphicImage value="#{imageStreamerMB.image}" height="100" width="115" cache="false">
+								<f:param name="id" value="#{user.avatar.id}" />
+							</p:graphicImage>
+				</p:column>	
+					
+                <p:column  sortBy="#{user.username}" filterBy="#{user.username}">
+                    <f:facet name="header">
+                        <h:outputText value="Username" />
+                    </f:facet>
+                    <h:outputLink value="#{request.contextPath}/user/feed/#{user.username}">#{user.username}</h:outputLink>
+                </p:column>
+
+                <p:column sortBy="#{user.firstName}" filterBy="#{user.firstName}">
+                    <f:facet name="header">
+                        <h:outputText value="Firstname" />
+                    </f:facet>
+                    <h:outputText value="#{user.firstName}" />
+                </p:column>
+
+                <p:column sortBy="#{user.lastName}" filterBy="#{user.lastName}">
+                    <f:facet name="header">
+                        <h:outputText value="Lastname" />
+                    </f:facet>
+                    <h:outputText value="#{user.lastName}" />
+                </p:column>
+
+                <p:column sortBy="#{user.email}" filterBy="#{user.email}">
+                    <f:facet name="header">
+                        <h:outputText value="Email" />
+                    </f:facet>
+                    <h:outputText value="#{user.email}" />
+                </p:column>
+                
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="page" />
+                    </f:facet>
+                     <p:commandLink value="info"
+			                       update=":userDetailForm:display" 
+			                       onclick="PF('userDialog').show()"  
+			                       title="View"
+			                       styleClass="ui-icon-info">
+                        <f:setPropertyActionListener value="#{user}" target="#{userMB.selectedUser}" />    
+                    </p:commandLink>
+                </p:column>
+                
+            </p:dataTable>
+         </h:form> 
+         
+         
+<!--    User detail dialog window -->
+
+         <p:dialog header="User Detail" widgetVar="userDialog" resizable="false" id="userDlg" showEffect="fade" hideEffect="fade" > 
+             <h:form id="userDetailForm">
+             	 <p:panelGrid id="display" columns="2" cellpadding="4" style="margin:0 auto;">   
+			         <f:facet name="header">
+				      	<c:choose>
+							<c:when test="#{not empty userMB.selectedUser.avatar.media}">
+								<p:graphicImage value="#{imageStreamerMB.image}" height="100" width="115" cache="false">
+									<f:param name="id" value="#{userMB.selectedUser.avatar.id}" />
+								</p:graphicImage>
+							</c:when>
+							<c:otherwise>
+								<p:graphicImage name="images/anonymous.jpg" styleClass="content" height="100" width="115" />
+							</c:otherwise>
+						</c:choose> 
+					 </f:facet>			
+						
+					 <h:outputText value="Username :"></h:outputText>
+			         <h:outputText value="#{userMB.selectedUser.username}" />
+			
+				 	 <h:outputText value="First name :"></h:outputText>
+			         <h:outputText value="#{userMB.selectedUser.firstName}" />
+			
+					 <h:outputText value="Last name :"></h:outputText>
+			         <h:outputText value="#{userMB.selectedUser.lastName}" />
+			 
+					 <h:outputText value="Email :"></h:outputText>
+					 <h:outputText value="#{userMB.selectedUser.email}"/>
+			                        
+					 <h:outputText value="Street Name :"></h:outputText>
+					 <h:outputText value="#{userMB.selectedUser.address.street}"/>
+			
+					 <h:outputText value="Suburb :"></h:outputText>
+					 <h:outputText value="#{userMB.selectedUser.address.suburb}"/>
+			
+					 <h:outputText value="City :"></h:outputText>
+					 <h:outputText value="#{userMB.selectedUser.address.city}"/>
+			
+					 <h:outputText value="Country :"></h:outputText>
+					 <h:outputText value="#{userMB.selectedUser.address.city.countryIn}" />
+						
+			         <f:facet name="footer">
+			         </f:facet>
+                </p:panelGrid> 
+             </h:form>
+          </p:dialog> 
+         <p:growl id="growl" showDetail="true" life="5000" />
+       
+     </ui:define>
+</ui:composition>

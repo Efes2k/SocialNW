@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PROCESS model-entity="JSFProcess">
+ <PROCESS-ITEM NAME="rules:#Login.xhtml" PATH="/Login.xhtml"
+  SHAPE="32,17,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#Login.xhtml:0" NAME="item"
+   PATH="/Login.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="failure::#Login.xhtml" NAME="output"
+    PATH="/Login.xhtml" TARGET="rules:#Login.xhtml" TITLE="failure" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID=":#{userRegistration.doCreateUser}:#Login.xhtml" NAME="output1"
+    PATH="/Login.xhtml" TARGET="rules:#Login.xhtml"
+    TITLE="#{userRegistration.doCreateUser}:[any]" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+</PROCESS>
