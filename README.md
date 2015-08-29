@@ -17,7 +17,7 @@ Here we walk through the entire content of the application.
 **Functionality:**
 
 - New user registration.
-- Authorization and authentication.
+- Authorization and authentication with JBoss JAAS DatabaseServerLoginModule.
 - The roles(Admin/User) privileges (including user blocking in admin's page).
 - Searching users(including autocomplite search).
 - Ability to change user settings.
