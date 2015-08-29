@@ -18,7 +18,7 @@ Here we walk through the entire content of the application.
 
 - New user registration.
 - Authorization and authentication with JBoss JAAS DatabaseServerLoginModule.
-- The roles(Admin/User) privileges (including user blocking in admin's page).
+- The roles(Admin/User) privileges .
 - Searching users(including autocomplite search).
 - Ability to change user settings.
 - Ability to add/remove friends.
