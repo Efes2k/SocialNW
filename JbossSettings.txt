@@ -1,3 +1,5 @@
+# Jboss configuration
+ 
  We need to tell jBoss application server that we are going to use this database for JDBCRealm purpose. You would place mysql connector jar into library of web application on path <jboss_home>\modules\system\layers\base\com\mysql\main and put file module.xml
  
 Configure module in standalone.xml
