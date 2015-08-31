@@ -77,18 +77,6 @@ public class UserRegistrationMB implements Serializable {
     	
     }
       
-//    
-//    public void checkDuplicateLogin(){
-//    	 FacesContext context = FacesContext.getCurrentInstance();
-//    	 Map<String, Object> map = new HashMap<String, Object>();
-//    	 map.put("username", newUser.getUsername());
-//    	 System.out.println("MAP    " + map);
-//    	 if(userServ.findWithNamedQuery(User.FIND_BY_NAME,map).size() != 0){
-//    		 context.addMessage("form:Username", new FacesMessage(FacesMessage.SEVERITY_ERROR, "User already exist", "User already exist"));
-//    		 context.getExternalContext().getFlash().setKeepMessages(true);
-//    		 System.out.println("FKIN EXIST");
-//    	 }
-//    }
     
     /**
      * Set new cities, if country was changed
