@@ -30,8 +30,8 @@ import com.ejb.socialnw.util.LazyUserDataModel;
 
 
 /**
- * User Controller class allows authorized users to do CRUD operations
- * with messages,comments and it's own settings.
+ * User Controller class allows to do CRUD operations
+ * with user and it's settings.
  * 
  * @author Andrei Bykov
  */

@@ -22,6 +22,7 @@ import com.ejb.socialnw.service.UserService;
 import com.ejb.socialnw.util.DateUtility;
 /**
  * User Controller class allows users to registration
+ * 
  * @author Andrei Bykov
  */
 @ManagedBean

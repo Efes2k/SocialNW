@@ -1,6 +1,7 @@
 package com.ejb.socialnw.util;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,7 +19,7 @@ import com.ejb.socialnw.service.DataAccessService;
 
 /**
  * 
- * Custom Lazy User DataModel which extends PrimeFaces LazyDataModel.
+ * Custom Lazy Message DataModel which extends PrimeFaces LazyDataModel.
  * 
  */
 
@@ -27,7 +28,7 @@ public class LazyMessageDataModel extends LazyDataModel<Message> {
 	private static final long serialVersionUID = 2147702833769997700L;
 	@Inject	private transient Logger logger;
     // Data Source for binding data to the DataTable
-    private List<Message> datasource = new ArrayList<Message>();
+    private List<Message> datasource;
     // Selected Page size in the DataTable
     private int pageSize;
     // Current row index number
@@ -37,7 +38,6 @@ public class LazyMessageDataModel extends LazyDataModel<Message> {
     // Data Access Service for CRUD operations
     private DataAccessService crudService;
    
-
     @Inject
     @PrincipalUser
 	private User userPrincipal;
@@ -54,49 +54,96 @@ public class LazyMessageDataModel extends LazyDataModel<Message> {
     }
 
 
-	@Override
-	public boolean isRowAvailable() {
-		return super.isRowAvailable();
-	}
+    /**
+     * Checks if the row is available
+     * @return boolean
+     */
+    @Override
+    public boolean isRowAvailable() {
+        if(datasource == null) 
+            return false;
+        int index = rowIndex % pageSize ; 
+        return index >= 0 && index < datasource.size();
+    }
 
-	@Override
-	public Message getRowData() {
-	     if(datasource == null)
-	            return null;
-	        int index =  rowIndex % pageSize;
-	        if(index > datasource.size()){
-	            return null;
-	        }
-	        return datasource.get(index);
-	}
 
 	@Override
 	public List<Message> load(int first, int pageSize, String sortField,
 							  SortOrder sortOrder, Map<String, Object> filters) {
-		
+			List<Message> data = new ArrayList<Message>();
+			
 			Map<String, Object> map = new HashMap<String, Object>();
-			map.put("id", visitedUser.getId());
-			System.out.println("Visited user id: " + visitedUser.getId());
-			datasource = crudService.findWithNamedQuery(Message.FIND_BY_ID,map, first, first + pageSize); 
-	        setRowCount(crudService.countTotalRecord(Message.TOTAL));   
-	        return datasource;
+	    	map.put("id", visitedUser.getId());
+	    	datasource = crudService.findWithNamedQuery(Message.FIND_BY_ID,map);
+		  	for (Message message : datasource) {
+				data.add(message);
+			} 
+		    Collections.sort(data, new LazySorter("date", SortOrder.DESCENDING));  
+		  	int dataSize = data.size();
+	        this.setRowCount(dataSize);
+	     
+	        
+	        //paginate
+	        if(dataSize > pageSize) {
+	            try {
+	                return data.subList(first, first + pageSize);
+	            }
+	            catch(IndexOutOfBoundsException e) {
+	                return data.subList(first, first + (dataSize % pageSize));
+	            }
+	        }
+	        else {
+	            return data;
+	        }
+
 	}
 
-	@Override
-	public Message getRowData(String rowKey) {
-		   if(datasource == null)
-	            return null;
-	       for(Message message: datasource) {  
-	           if(message.getId().toString().equals(rowKey))  
-	           return message;  
-	       }  
-	       return null;  
-	}
-
-	 
-    /*
-     * ===== Getters and Setters of LazyMessageDataModel fields
+	/**
+     * Gets the user object's primary key
+     * @param user
+     * @return Object
      */
+    @Override
+    public Object getRowKey(Message message) {
+        return message.getId().toString();
+    }
+
+    /**
+     * Returns the user object at the specified position in datasource.
+     * @return 
+     */
+    @Override
+    public Message getRowData() {
+        if(datasource == null)
+            return null;
+        int index =  rowIndex % pageSize;
+        if(index > datasource.size()){
+            return null;
+        }
+        return datasource.get(index);
+    }
+    
+    /**
+     * Returns the user object that has the row key.
+     * @param rowKey
+     * @return 
+     */
+    @Override
+    public Message getRowData(String rowKey) {
+        if(datasource == null)
+            return null;
+       for(Message message: datasource) {  
+           if(message.getId().toString().equals(rowKey))  
+           return message;  
+       }  
+       return null;  
+    }
+    
+    
+    /*
+     * ===== Getters and Setters of LazyUserDataModel fields
+     */
+    
     
     /**
      *
@@ -170,36 +217,8 @@ public class LazyMessageDataModel extends LazyDataModel<Message> {
         return datasource;
     }
 
-	/** Return message list
-	 * @return datasource
-	 */
-	public List<Message> getDatasource() {
-		return datasource;
-	}
 
-	/**
-	 * Set message list
-	 * @param datasource
-	 */
-	public void setDatasource(List<Message> datasource) {
-		this.datasource = datasource;
-	}
-
-	/**Return visited user
-	 * @return visitedUser
-	 */
-	public User getVisitedUser() {
-		return visitedUser;
-	}
-
-	/**
-	 * Set visited user
-	 * @param visitedUser
-	 */
-	public void setVisitedUser(User visitedUser) {
-		this.visitedUser = visitedUser;
-	}
-
+	
 	
 
 }

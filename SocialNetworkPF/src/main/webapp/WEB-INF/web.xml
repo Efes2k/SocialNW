@@ -78,9 +78,6 @@
         <location>/Login.xhtml</location>
     </error-page>
     
-    
-    
-    
 <!--       Transaction filter -->
 <!-- 	<filter> -->
 <!--         <filter-name>ConnectionFilter</filter-name> -->
@@ -108,8 +105,6 @@
     	<dispatcher>FORWARD</dispatcher>    
     </filter-mapping>
 
-
-	
 	  <!-- PrettyFaces filter -->
 	<filter>
 		<filter-name>Pretty Filter</filter-name>
@@ -133,7 +128,5 @@
         <filter-name>LoginPageFilter</filter-name>
         <url-pattern>/Login.xhtml</url-pattern>
     </filter-mapping>
-    
-  
     
 </web-app>
