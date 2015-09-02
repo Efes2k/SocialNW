@@ -13,7 +13,6 @@ import javax.transaction.UserTransaction;
 
 
 /**
- * To prevent user from going back to Login page if the user already logged in
  * @author Andrei Bykov
  */
 @Deprecated

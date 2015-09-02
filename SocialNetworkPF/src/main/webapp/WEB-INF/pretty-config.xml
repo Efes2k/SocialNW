@@ -4,13 +4,7 @@
                       http://ocpsoft.org/xml/ns/prettyfaces/rewrite-config-prettyfaces.xsd" >
 
 	<url-mapping id="login">
-		<pattern value="/user/feed/#{userActionMB.userId}" />
-		<view-id value="/user/UserHome.xhtml" />
-		<action>#{userActionMB.loadVisitedUser}</action>
-	</url-mapping>
-	
-		<url-mapping id="home">
-		<pattern value="/user/UserHome.xhtml" />
+		<pattern value="/user/feed/#{visitedUserMB.userId}" />
 		<view-id value="/user/UserHome.xhtml" />
 	</url-mapping>
 	

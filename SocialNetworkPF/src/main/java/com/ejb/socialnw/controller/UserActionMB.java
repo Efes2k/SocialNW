@@ -10,12 +10,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
+import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
+import javax.inject.Named;
 
 import org.apache.commons.io.IOUtils;
 import org.primefaces.event.FileUploadEvent;
@@ -23,6 +23,7 @@ import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.UploadedFile;
 
 import com.ejb.socialnw.annotaions.PrincipalUser;
+import com.ejb.socialnw.annotaions.VisitedUser;
 import com.ejb.socialnw.entity.Media;
 import com.ejb.socialnw.entity.MyFriends;
 import com.ejb.socialnw.entity.User;
@@ -36,12 +37,12 @@ import com.ejb.socialnw.util.DateUtility;
 import com.ejb.socialnw.util.LazyMessageDataModel;
  
 /**
- * User Action Controller class allows authorized users to do CRUD operations
- * with messages,comments and it's own settings.
+ * Action Controller class allows CRUD operations with messages,comments and it's media,
+ * add/remove friends
  * 
  * @author Andrei Bykov
  */
-@ManagedBean
+@Named
 @ViewScoped
 public class UserActionMB implements Serializable {
 	
@@ -67,7 +68,7 @@ public class UserActionMB implements Serializable {
 	@Inject	@PrincipalUser private User user;
 	
 	//Get current visited user
-	private User visitedUser;
+	@Inject	 @VisitedUser private User visitedUser;
 	
 	// Lazy loading message list
     private LazyDataModel<Message> lazyModel; 
@@ -86,6 +87,7 @@ public class UserActionMB implements Serializable {
 	//for dynamic relation with inputText
 	private Map <Long, String> commentList;
 	
+	
 	   /**
      * Initializing Data Access Service for LazyUserDataModel class,
      * initializing new message,media and comment.
@@ -93,43 +95,24 @@ public class UserActionMB implements Serializable {
      */
     @PostConstruct
     public void init(){
+    	logger.log(Level.INFO, "Message controller initialized in # "+ (visitedUser == null? "NULL" : visitedUser.getUsername()) +" "  + DateUtility.getCurrentDateTime());
     	message = new Message();
     	media = new Media();
     	comment = new Comment();
     	commentList = new HashMap<Long, String>();
-		lazyModel = new LazyMessageDataModel(messageServ,visitedUser);
-      	logger.log(Level.INFO, "Message controller initialized in #" + DateUtility.getCurrentDateTime());
+		if(visitedUser != null) {
+			lazyModel = new LazyMessageDataModel(messageServ,visitedUser);
+			validFriend = validateFriend();
+		}
+      
+    }
+    
+    @PreDestroy
+    public void destroy(){
+    	logger.log(Level.INFO, "Message controller destroyed in # "+ (visitedUser == null? "NULL" : visitedUser.getUsername()) +" "  + DateUtility.getCurrentDateTime());
     }
 	
-    /**
-     * Default constructor
-     */
-	public UserActionMB() {
-	}
-	
-	 /**
-     * Execute every time when user go on url (/user/feed/{username})
-     * and load visited user
-     * Description on pretty-faces.xml
-     * 
-     */
-	@SuppressWarnings("unchecked")
-	public String loadVisitedUser(){
-		if(userId != null) {
-			Map<String, Object> params = new HashMap<String, Object>();
-			params.put("username", userId);
-			List<User> list = userServ.findWithNamedQuery(User.FIND_BY_NAME, params);
-			if(list.size() == 1) {
-				visitedUser = list.get(0);
-				validFriend = validateFriend();
-			}
-			else visitedUser = user;
-			logger.log(Level.INFO, "User ({0}) was visited in #" + DateUtility.getCurrentDateTime(), visitedUser.getUsername());
-			return null;
-		}
-		return "pretty:store";
-		
-	}
+
 	
 	 /**
      * Create, Update and Delete operations
@@ -150,10 +133,8 @@ public class UserActionMB implements Serializable {
      * Delete current comment from message
      * @param actionEvent
      */
-	public void doDeleteComment(ActionEvent event) {
-		String id = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("id");
-		Comment comment = commentServ.find(Integer.valueOf(id));
-		commentServ.deleteItem(comment);
+	public void doDeleteComment(Comment commentToDelete) {
+		commentServ.deleteItem(commentToDelete);
 	}
 	   
     /**
@@ -173,7 +154,7 @@ public class UserActionMB implements Serializable {
         User where = userServ.find(visitedUser.getId());
         message.setOwner(owner);
         message.setWhere(where);
-        if(file != null && vaildateImage()) {
+        if(file != null) {
         	storeImage();
         }
     	logger.log(Level.INFO, "Message ({0}) was added#" + DateUtility.getCurrentDateTime(), message.getText());
@@ -214,31 +195,6 @@ public class UserActionMB implements Serializable {
 		}
     }
     
-     /**
-     *For validating image format
-     * @deprecated
-     * @return boolean
-     */
-    @Deprecated
-    private boolean vaildateImage(){
-    	if(file.getContentType().equals("image/jpeg")) return true;
-    	else return false;
-    }
-    
-    /**
-     * For get list of user messages, without using LazyModel
-     * @deprecated
-     * @return result of finding messages
-     */
-    @SuppressWarnings("unchecked")
-    @Deprecated
-    public List<Message> messagesListOnUserPage(){
-    	Map<String, Object> map = new HashMap<String, Object>();
-    	map.put("id", visitedUser.getId());
-    	List<Message> result = messageServ.findWithNamedQuery(Message.FIND_BY_ID,map);
-    	return result;
-    }
-    
     
     /**
      * Get all user's not null user media for 
@@ -252,12 +208,6 @@ public class UserActionMB implements Serializable {
     	map.put("id", user.getId());
     	List<Message> result = messageServ.findWithNamedQuery(Message.FIND_BY_OWNER,map);
     	return result;
-    }
-    
-    @Deprecated
-    public LazyDataModel<Message> findUserMessages(){
-    	 lazyModel = new LazyMessageDataModel(messageServ,visitedUser);
-    	 return lazyModel;
     }
     
     /**

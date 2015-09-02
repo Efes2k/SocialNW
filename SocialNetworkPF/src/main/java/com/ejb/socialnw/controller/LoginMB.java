@@ -7,11 +7,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -24,7 +24,7 @@ import com.ejb.socialnw.util.DateUtility;
  *
  * @author Andrei Bykov
  */
-@ManagedBean
+@Named
 @ViewScoped
 public class LoginMB implements Serializable {
 

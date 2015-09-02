@@ -107,6 +107,7 @@
 											 type="submit"
 											 immediate="true"
 											 styleClass="ui-priority-primary"
+											 update = ":messages:dataTable"
 											
 											 >
 											 
@@ -125,7 +126,7 @@
 						<h:form id="messages">
 	
 							<p:dataTable id="dataTable" var="message" 
-										 value="#{userActionMB.messagesListOnUserPage()}"
+										 value="#{userActionMB.lazyModel}"
 										 styleClass="userDataTableStyle" 
 										 paginator="true" rows="5"
 										 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink}
@@ -208,7 +209,7 @@
 																 ajax="true"
 																 icon="ui-icon-check"
 																 action = "#{userActionMB.doCreateComment(input1.value,message)}"
-																 update=":messages:dataTable:message">
+																 update=":messages:dataTable">
 	
 												 <f:ajax render=":dataTable" execute="@form"  />
 												</p:commandButton>
@@ -245,9 +246,11 @@
 													<p:commandButton icon="ui-icon-closethick"
 																 	 style="float:right" 
 																 	 type="submit"
+																 	 immediate="true"
+																 	 ajax="true"
 																 	 rendered="#{userActionMB.visitedUser.username == currentUser.username || currentUser.username == comment.author.username}"
-																 	 actionListener="#{userActionMB.doDeleteComment}"
-																	 update=":messages:dataTable:message" >
+																 	 actionListener="#{userActionMB.doDeleteComment(comment)}"
+																	 update=":messages" >
 	
 														<f:param name="id" value="#{comment.id}" />
 														<f:ajax render="dataTable" />

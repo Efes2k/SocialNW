@@ -8,10 +8,10 @@ import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.servlet.http.HttpServletRequest;
 
 import com.ejb.socialnw.entity.Role;
@@ -22,10 +22,9 @@ import com.ejb.socialnw.service.UserService;
 import com.ejb.socialnw.util.DateUtility;
 /**
  * User Controller class allows users to registration
- * 
  * @author Andrei Bykov
  */
-@ManagedBean
+@Named
 @ViewScoped
 public class UserRegistrationMB implements Serializable {
 	private static final long serialVersionUID = 7215739521578860445L;

@@ -5,9 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.enterprise.context.SessionScoped;
 import javax.enterprise.inject.Produces;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -22,8 +21,9 @@ import com.ejb.socialnw.service.UserService;
  * 
  * @author Andrei Bykov
  */
-@ManagedBean
+
 @SessionScoped
+@Named
 public class CurrentUserMB implements Serializable {
 	private static final long serialVersionUID = 2322801641689140670L;
 	@Inject private UserService das;

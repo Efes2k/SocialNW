@@ -4,11 +4,11 @@ import java.io.ByteArrayInputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.faces.bean.ApplicationScoped;
-import javax.faces.bean.ManagedBean;
+import javax.enterprise.context.ApplicationScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseId;
 import javax.inject.Inject;
+import javax.inject.Named;
 
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
@@ -23,7 +23,7 @@ import com.ejb.socialnw.util.DateUtility;
  * @author Andrei Bykov
  */
 
-@ManagedBean
+@Named
 @ApplicationScoped
 public class ImageStreamerMB {
 

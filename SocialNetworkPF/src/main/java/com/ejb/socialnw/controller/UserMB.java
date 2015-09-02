@@ -8,11 +8,11 @@ import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
+import javax.inject.Named;
 
 import org.apache.commons.io.IOUtils;
 import org.primefaces.event.FileUploadEvent;
@@ -30,13 +30,13 @@ import com.ejb.socialnw.util.LazyUserDataModel;
 
 
 /**
- * User Controller class allows to do CRUD operations
- * with user and it's settings.
+ * User Controller class allows authorized users to do CRUD operations
+ * with messages,comments and it's own settings.
  * 
  * @author Andrei Bykov
  */
 
-@ManagedBean
+@Named
 @ViewScoped
 public class UserMB implements Serializable  {
 	private static final long serialVersionUID = -3406076154361821847L;
