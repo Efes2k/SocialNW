@@ -27,8 +27,8 @@ import com.ejb.socialnw.util.DateUtility;
 @ApplicationScoped
 public class ImageStreamerMB {
 
-	@Inject	private transient Logger logger;
-	@Inject private MediaService mediaServ;
+    @Inject	private transient Logger logger;
+    @Inject private MediaService mediaServ;
 
 	/**
 	  * 
