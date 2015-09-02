@@ -20,152 +20,156 @@ import com.ejb.socialnw.entity.location.City;
 import com.ejb.socialnw.entity.location.Country;
 import com.ejb.socialnw.service.UserService;
 import com.ejb.socialnw.util.DateUtility;
+
 /**
  * User Controller class allows users to registration
+ * 
  * @author Andrei Bykov
  */
 @Named
 @ViewScoped
 public class UserRegistrationMB implements Serializable {
-	private static final long serialVersionUID = 7215739521578860445L;
-	
-	@Inject	private transient Logger logger;
-	
-	//User service for CRUD operation
-	@Inject private UserService userServ;
-	
-	// Creating new user
-	private User newUser = new User();
-	
-	//List of available countries
+    private static final long serialVersionUID = 7215739521578860445L;
+
+    @Inject
+    private transient Logger logger;
+
+    //User service for CRUD operation
+    @Inject
+    private UserService userServ;
+
+    // Creating new user
+    private User newUser = new User();
+
+    // List of available countries
     private List<Country> countries;
-    
-    //List of available cities
-    private List<City> cities; 
-    
-    //SelectOneMeny country item
+
+    // List of available cities
+    private List<City> cities;
+
+    // SelectOneMeny country item
     private Country country;
 
     /**
      * Initializing countries for selection on registration page
      */
     @SuppressWarnings("unchecked")
-	@PostConstruct
+    @PostConstruct
     public void init() {
         countries = userServ.findWithNamedQuery(Country.ALL);
-        logger.log(Level.INFO, "UserWizard controller initialized in #" + DateUtility.getCurrentDateTime());
+        logger.log(Level.INFO, "UserWizard controller initialized in #"
+                + DateUtility.getCurrentDateTime());
     }
-    
+
     /**
      * Save new user in database
      */
     public void doCreateUser() {
         FacesContext context = FacesContext.getCurrentInstance();
         HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
-    	newUser.setRoles(getUserRoles());
-    	userServ.update(newUser);
-    	context.addMessage("success", new FacesMessage("Registration complete successfully"));
+        newUser.setRoles(getUserRoles());
+        userServ.update(newUser);
+        context.addMessage("success", new FacesMessage("Registration complete successfully"));
+        
         context.getExternalContext().getFlash().setKeepMessages(true);
-        //if user not authorized, redirect to login page
-    	if(request.getUserPrincipal() == null){
-	        try {
-	        	context.getExternalContext().redirect(request.getContextPath() + "/Login.xhtml");
-			} catch (IOException e) {
-				logger.log(Level.WARNING, "IOException while save new user in #" + DateUtility.getCurrentDateTime());
-			}
-    	}
-    	
+        // if user not authorized, redirect to login page
+        if (request.getUserPrincipal() == null) {
+            try {
+                context.getExternalContext().redirect(request.getContextPath() + "/Login.xhtml");
+            } catch (IOException e) {
+                logger.log(Level.WARNING, "IOException while save new user in #" + DateUtility.getCurrentDateTime());
+            }
+        }
+
     }
-      
-    
+
     /**
      * Set new cities, if country was changed
      */
     public void changeCountry() {
-    	if(country != null){
-    	cities = country.getCities();
-    	}
+        if (country != null) {
+            cities = country.getCities();
+        }
     }
 
     /**
      * List of user roles
+     * 
      * @return
      * @deprecated
      */
     @SuppressWarnings("unchecked")
     @Deprecated
-    private List<Role> getUserRoles(){
-    	return userServ.findWithNamedQuery(Role.LIST_NAMED);
+    private List<Role> getUserRoles() {
+        return userServ.findWithNamedQuery(Role.LIST_NAMED);
     }
-    
-    
+
     /**
      * Getters, Setters
      */
-    
+
     /**
      * @return user
      * @see User
      */
-	public User getNewUser() {
-		return newUser;
-	}
-	   /**
+    public User getNewUser() {
+        return newUser;
+    }
+
+    /**
      * @param user
      * @see User
      */
-	public void setNewUser(User newUser) {
-		this.newUser = newUser;
-	}
+    public void setNewUser(User newUser) {
+        this.newUser = newUser;
+    }
 
-	/**
-	 * @return countries
-	 * @see Country
-	 */
-	public List<Country> getCountries() {
-		return countries;
-	}
+    /**
+     * @return countries
+     * @see Country
+     */
+    public List<Country> getCountries() {
+        return countries;
+    }
 
-	/**
-	 * @param countries
-	 * @see Country
-	 */
-	public void setCountries(List<Country> countries) {
-		this.countries = countries;
-	}
+    /**
+     * @param countries
+     * @see Country
+     */
+    public void setCountries(List<Country> countries) {
+        this.countries = countries;
+    }
 
-	/**
-	 * @return cities
-	 * @see City
-	 */
-	public List<City> getCities() {
-		return cities;
-	}
+    /**
+     * @return cities
+     * @see City
+     */
+    public List<City> getCities() {
+        return cities;
+    }
 
-	/**
-	 * @param cities
-	 * @see City
-	 */
-	public void setCities(List<City> cities) {
-		this.cities = cities;
-	}
+    /**
+     * @param cities
+     * @see City
+     */
+    public void setCities(List<City> cities) {
+        this.cities = cities;
+    }
 
-	/**
-	 * @return country
-	 * @see Country
-	 */
-	public Country getCountry() {
-		return country;
-	}
+    /**
+     * @return country
+     * @see Country
+     */
+    public Country getCountry() {
+        return country;
+    }
 
-	/**
-	 * @param country
-	 *  @see Country
-	 */
-	public void setCountry(Country country) {
-		this.country = country;
-	}
+    /**
+     * @param country
+     * @see Country
+     */
+    public void setCountry(Country country) {
+        this.country = country;
+    }
 
-
-    
 }

@@ -1,5 +1,4 @@
-	package com.ejb.socialnw.util;
-
+package com.ejb.socialnw.util;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
@@ -17,14 +16,15 @@ import com.ejb.socialnw.service.DataAccessService;
 
 /**
  * 
- * Custom Lazy User DataModel which extends PrimeFaces LazyDataModel.
- * For more information please visit http://www.primefaces.org/showcase-labs/ui/datatableLazy.jsf
+ * Custom Lazy User DataModel which extends PrimeFaces LazyDataModel. For more
+ * information please visit
+ * http://www.primefaces.org/showcase-labs/ui/datatableLazy.jsf
  */
 
-public class LazyUserDataModel extends LazyDataModel<User> implements Serializable{
+public class LazyUserDataModel extends LazyDataModel<User> implements Serializable {
 
-	private static final long serialVersionUID = 3770473845499720383L;
-	// Data Source for binding data to the DataTable
+    private static final long serialVersionUID = 3770473845499720383L;
+    // Data Source for binding data to the DataTable
     private List<User> datasource;
     // Selected Page size in the DataTable
     private int pageSize;
@@ -34,7 +34,7 @@ public class LazyUserDataModel extends LazyDataModel<User> implements Serializab
     private int rowCount;
     // Data Access Service for CRUD operations
     private DataAccessService crudService;
-    
+
     /**
      *
      * @param crudService
@@ -45,85 +45,88 @@ public class LazyUserDataModel extends LazyDataModel<User> implements Serializab
 
     /**
      * Checks if the row is available
+     * 
      * @return boolean
      */
     @Override
     public boolean isRowAvailable() {
-        if(datasource == null) 
+        if (datasource == null)
             return false;
-        int index = rowIndex % pageSize ; 
+        int index = rowIndex % pageSize;
         return index >= 0 && index < datasource.size();
     }
-    
+
     /**
      * Lazy loading user list with sorting ability and filtering
+     * 
      * @param first
      * @param pageSize
      * @param sortField
      * @param sortOrder
      * @param filters
      * @return List<User>
-     */ 
+     */
     @Override
-	public List<User> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
-    	  List<User> data = new ArrayList<User>();
-    	  datasource = crudService.findWithNamedQuery(User.ALL);
-    	  
-    	//filter
-        for(User userT : datasource) {
+    public List<User> load(int first, int pageSize, String sortField,
+            SortOrder sortOrder, Map<String, Object> filters) {
+        List<User> data = new ArrayList<User>();
+        datasource = crudService.findWithNamedQuery(User.ALL);
+
+        // filter
+        for (User userT : datasource) {
             boolean match = true;
             if (filters != null) {
-                for (Iterator<String> it = filters.keySet().iterator(); it.hasNext();) {
+                for (Iterator<String> it = filters.keySet().iterator(); it
+                        .hasNext();) {
                     try {
-                    	String filterProperty = it.next();
+                        String filterProperty = it.next();
                         Object filterValue = filters.get(filterProperty);
                         Field field = userT.getClass().getDeclaredField(filterProperty);
                         field.setAccessible(true);
                         String fieldValue = String.valueOf(field.get(userT));
-                        if(filterValue == null || fieldValue.startsWith(filterValue.toString())) {
+                        if (filterValue == null || fieldValue.startsWith(filterValue.toString())) {
                             match = true;
-                    }
-                    else {
+                        } else {
                             match = false;
                             break;
                         }
-                    } catch(Exception e) {
-                    	e.printStackTrace();
+                    } catch (Exception e) {
+                        e.printStackTrace();
                         match = false;
                     }
                 }
             }
-            
-            if(match) {
+
+            if (match) {
                 data.add(userT);
             }
         }
-        
-        // if sort field is not null then we sort the field according to sortfield and sortOrder parameter
-        if(sortField != null) {  
-            Collections.sort(data, new LazySorter(sortField, sortOrder));  
-        } 
-        
+
+        // if sort field is not null then we sort the field according to
+        // sortfield and sortOrder parameter
+        if (sortField != null) {
+            Collections.sort(data, new LazySorter(sortField, sortOrder));
+        }
+
         int dataSize = data.size();
         this.setRowCount(dataSize);
-        
-        //paginate
-        if(dataSize > pageSize) {
+
+        // paginate
+        if (dataSize > pageSize) {
             try {
                 return data.subList(first, first + pageSize);
-            }
-            catch(IndexOutOfBoundsException e) {
+            } catch (IndexOutOfBoundsException e) {
                 return data.subList(first, first + (dataSize % pageSize));
             }
-        }
-        else {
+        } else {
             return data;
         }
-        
-	}
 
-	/**
+    }
+
+    /**
      * Gets the user object's primary key
+     * 
      * @param user
      * @return Object
      */
@@ -134,41 +137,41 @@ public class LazyUserDataModel extends LazyDataModel<User> implements Serializab
 
     /**
      * Returns the user object at the specified position in datasource.
-     * @return 
+     * 
+     * @return
      */
     @Override
     public User getRowData() {
-        if(datasource == null)
+        if (datasource == null)
             return null;
-        int index =  rowIndex % pageSize;
-        if(index > datasource.size()){
+        int index = rowIndex % pageSize;
+        if (index > datasource.size()) {
             return null;
         }
         return datasource.get(index);
     }
-    
+
     /**
      * Returns the user object that has the row key.
+     * 
      * @param rowKey
-     * @return 
+     * @return
      */
     @Override
     public User getRowData(String rowKey) {
-        if(datasource == null)
+        if (datasource == null)
             return null;
-       for(User user : datasource) {  
-           if(user.getId().toString().equals(rowKey))  
-           return user;  
-       }  
-       return null;  
+        for (User user : datasource) {
+            if (user.getId().toString().equals(rowKey))
+                return user;
+        }
+        return null;
     }
-    
-    
+
     /*
      * ===== Getters and Setters of LazyUserDataModel fields
      */
-    
-    
+
     /**
      *
      * @param pageSize
@@ -180,6 +183,7 @@ public class LazyUserDataModel extends LazyDataModel<User> implements Serializab
 
     /**
      * Returns page size
+     * 
      * @return int
      */
     @Override
@@ -189,15 +193,17 @@ public class LazyUserDataModel extends LazyDataModel<User> implements Serializab
 
     /**
      * Returns current row index
+     * 
      * @return int
      */
     @Override
     public int getRowIndex() {
         return this.rowIndex;
     }
-    
+
     /**
      * Sets row index
+     * 
      * @param rowIndex
      */
     @Override
@@ -207,33 +213,37 @@ public class LazyUserDataModel extends LazyDataModel<User> implements Serializab
 
     /**
      * Sets row count
+     * 
      * @param rowCount
      */
     @Override
     public void setRowCount(int rowCount) {
         this.rowCount = rowCount;
     }
-    
+
     /**
      * Returns row count
+     * 
      * @return int
      */
     @Override
     public int getRowCount() {
         return this.rowCount;
     }
-     
+
     /**
      * Sets wrapped data
+     * 
      * @param list
      */
     @Override
     public void setWrappedData(Object list) {
         this.datasource = (List<User>) list;
     }
-    
+
     /**
      * Returns wrapped data
+     * 
      * @return
      */
     @Override
@@ -241,4 +251,3 @@ public class LazyUserDataModel extends LazyDataModel<User> implements Serializab
         return datasource;
     }
 }
-                    

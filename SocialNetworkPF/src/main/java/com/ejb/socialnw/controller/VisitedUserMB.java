@@ -17,7 +17,6 @@ import com.ejb.socialnw.entity.User;
 import com.ejb.socialnw.service.UserService;
 import com.ejb.socialnw.util.DateUtility;
 
-
 /**
  * Visited user producer for injectable visitedlUser
  * 
@@ -27,44 +26,42 @@ import com.ejb.socialnw.util.DateUtility;
 @Named
 @ViewScoped
 public class VisitedUserMB implements Serializable {
-	private static final long serialVersionUID = 2322801641689140670L;
-	@Inject private UserService userServ;
-	@Inject	private transient Logger logger;
-	private User visitedUser;
-	private String userId;
+    
+    private static final long serialVersionUID = 2322801641689140670L;
+    @Inject private UserService userServ;
+    @Inject private transient Logger logger;
+    private User visitedUser;
+    private String userId;
 
-	/**
-	  * @param injectionPoint
-	  * @return userVisited current visited user
-	 */
-	
-	@Produces
-	@VisitedUser
-	@Named("visitedUser")
-	@SuppressWarnings("unchecked")
-	public User loadVisitedUser() {
-		logger.log(Level.INFO, "Visited user construct, id = " + userId + "  " + DateUtility.getCurrentDateTime());
-		if(userId != null) {
-			Map<String, Object> params = new HashMap<String, Object>();
-			params.put("username", userId);
-			List<User> list = userServ.findWithNamedQuery(User.FIND_BY_NAME, params);
-			if(list.size() == 1) {
-				visitedUser = list.get(0);
-			}
-			else visitedUser = null;
-		
-		}
-		return visitedUser;
-	}
+    /**
+     * @param injectionPoint
+     * @return userVisited current visited user
+     */
 
-	public String getUserId() {
-		return userId;
-	}
+    @Produces
+    @VisitedUser
+    @Named("visitedUser")
+    @SuppressWarnings("unchecked")
+    public User loadVisitedUser() {
+        logger.log(Level.INFO, "Visited user construct, id = " + userId + "  " + DateUtility.getCurrentDateTime());
+        if (userId != null) {
+            Map<String, Object> params = new HashMap<String, Object>();
+            params.put("username", userId);
+            List<User> list = userServ.findWithNamedQuery(User.FIND_BY_NAME, params);
+            if (list.size() == 1) {
+                visitedUser = list.get(0);
+            } else
+                visitedUser = null;
+        }
+        return visitedUser;
+    }
 
-	public void setUserId(String userId) {
-		this.userId = userId;
-	}
-	
-	
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
 
 }

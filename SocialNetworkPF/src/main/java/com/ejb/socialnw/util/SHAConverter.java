@@ -14,6 +14,7 @@ import javax.faces.convert.FacesConverter;
 
 /**
  * Password string to SHA256 conversion utility class
+ * 
  * @author Andrei Bykov
  */
 @FacesConverter("com.ejb.socialnw.util.SHAConverter")
@@ -22,31 +23,37 @@ public class SHAConverter implements Converter {
     @Override
     public Object getAsObject(FacesContext context, UIComponent component, String value) {
 
-        if(value.equalsIgnoreCase(""))
+        if (value.equalsIgnoreCase(""))
             return "";
-        else if (value.length()<4){
-            FacesContext.getCurrentInstance().addMessage("newPassword", new FacesMessage(FacesMessage.SEVERITY_ERROR,"Password cannot be less than 4 letters!","Password cannot be less than 4 letters!"));
+        else if (value.length() < 4) {
+            FacesContext.getCurrentInstance().addMessage(
+                    "newPassword",new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                            "Password cannot be less than 4 letters!",
+                            "Password cannot be less than 4 letters!"));
             return value;
         }
         try {
             MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
             byte[] hash = messageDigest.digest(value.getBytes("UTF-8"));
-            StringBuilder stringBuilder=  new StringBuilder();
+            StringBuilder stringBuilder = new StringBuilder();
             for (int i = 0; i < hash.length; i++) {
-                stringBuilder.append(Integer.toString((hash[i] & 0xff) + 0x100, 16).substring(1));
+                stringBuilder.append(Integer.toString((hash[i] & 0xff) + 0x100,
+                        16).substring(1));
             }
             return stringBuilder.toString();
         } catch (NoSuchAlgorithmException ex) {
             Logger.getLogger(SHAConverter.class.getName()).log(Level.SEVERE, null, ex);
             return "";
         } catch (UnsupportedEncodingException unsupportedEncodingException) {
-            Logger.getLogger(SHAConverter.class.getName()).log(Level.SEVERE, null,"SHAConverter.getAsObject:"+ unsupportedEncodingException);
+            Logger.getLogger(SHAConverter.class.getName()).log(Level.SEVERE, null,
+                    "SHAConverter.getAsObject:" + unsupportedEncodingException);
             return "";
         }
     }
 
     @Override
-    public String getAsString(FacesContext context, UIComponent component, Object value) {
+    public String getAsString(FacesContext context, UIComponent component,
+            Object value) {
         return "";
     }
 }

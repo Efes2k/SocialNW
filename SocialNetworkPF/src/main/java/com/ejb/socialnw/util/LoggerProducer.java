@@ -13,11 +13,11 @@ import javax.faces.bean.ManagedBean;
  */
 @ManagedBean
 public class LoggerProducer {
-   
+
     /**
-    * @param injectionPoint
-    * @return logger
-    */
+     * @param injectionPoint
+     * @return logger
+     */
     @Produces
     public Logger produceLogger(InjectionPoint injectionPoint) {
         return Logger.getLogger(injectionPoint.getMember().getDeclaringClass().getName());
