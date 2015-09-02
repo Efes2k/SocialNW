@@ -181,19 +181,19 @@ public class UserActionMB implements Serializable {
      *
      */
     public void storeImage() {
-	    try {
-		    media.setContentType(file.getContentType());
-		    media.setFileName("filename");
-		    media.setMedia(IOUtils.toByteArray(file.getInputstream()));
-	        message.setMedia(media);
+        try {
+            media.setContentType(file.getContentType());
+            media.setFileName("filename");
+            media.setMedia(IOUtils.toByteArray(file.getInputstream()));
+            message.setMedia(media);
 	        media = new Media();
-   	    } catch (IOException e) {
-		    e.printStackTrace();
-		    FacesMessage errorMsg = new FacesMessage(
-		    FacesMessage.SEVERITY_ERROR, "Upload error", e.getMessage());
-		    FacesContext.getCurrentInstance().addMessage(null, errorMsg);
-	    }
-   }
+        } catch (IOException e) {
+            e.printStackTrace();
+            FacesMessage errorMsg = new FacesMessage(
+            FacesMessage.SEVERITY_ERROR, "Upload error", e.getMessage());
+            FacesContext.getCurrentInstance().addMessage(null, errorMsg);
+        }
+    }
     
     
     /**
