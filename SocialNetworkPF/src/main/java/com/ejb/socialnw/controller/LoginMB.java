@@ -28,8 +28,8 @@ import com.ejb.socialnw.util.DateUtility;
 @ViewScoped
 public class LoginMB implements Serializable {
 
-	private static final long serialVersionUID = 2925667878806624698L;
-	@Inject	private transient Logger logger;
+    private static final long serialVersionUID = 2925667878806624698L;
+    @Inject	private transient Logger logger;
     private String username;
     private String password;
 
