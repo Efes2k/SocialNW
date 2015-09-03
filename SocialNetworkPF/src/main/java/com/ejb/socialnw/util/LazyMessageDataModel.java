@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
 
 import javax.inject.Inject;
 
@@ -26,7 +25,6 @@ import com.ejb.socialnw.service.DataAccessService;
 public class LazyMessageDataModel extends LazyDataModel<Message> {
 
     private static final long serialVersionUID = 2147702833769997700L;
-    @Inject private transient Logger logger;
     // Data Source for binding data to the DataTable
     private List<Message> datasource;
     // Selected Page size in the DataTable

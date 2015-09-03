@@ -40,7 +40,6 @@ public class UsernameExistValidator implements Validator, ClientValidator {
 
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("username", value.toString());
-        System.out.println("MAP    " + map);
         if (userServ.findWithNamedQuery(User.FIND_BY_NAME, map).size() != 0) {
             throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "User already exist", "User already exist"));
         }

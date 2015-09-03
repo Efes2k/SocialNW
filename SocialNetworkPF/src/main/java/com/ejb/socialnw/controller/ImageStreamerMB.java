@@ -1,7 +1,6 @@
 package com.ejb.socialnw.controller;
 
 import java.io.ByteArrayInputStream;
-import java.util.logging.Logger;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.faces.context.FacesContext;
@@ -25,7 +24,6 @@ import com.ejb.socialnw.service.MediaService;
 @ApplicationScoped
 public class ImageStreamerMB {
 
-    @Inject	private transient Logger logger;
     @Inject private MediaService mediaServ;
 
 	/**

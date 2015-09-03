@@ -57,7 +57,7 @@ public class UserRegistrationMB implements Serializable {
     @PostConstruct
     public void init() {
         countries = userServ.findWithNamedQuery(Country.ALL);
-        logger.log(Level.INFO, "UserWizard controller initialized in #"
+        logger.log(Level.INFO, "User registration controller initialized in #"
                 + DateUtility.getCurrentDateTime());
     }
 

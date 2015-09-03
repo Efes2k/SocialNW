@@ -47,3 +47,55 @@ public class ConnectionFilter implements Filter {
     }
 }
 
+//public class ConnectionFilter implements Filter {
+//    @Inject
+//    private transient Logger logger;
+//    
+//    
+//    @Override
+//    public void destroy() {
+//
+//    }
+//
+//    @Resource
+//    private UserTransaction utx;
+//
+//    @Override
+//    public void doFilter(ServletRequest request, ServletResponse response,
+//            FilterChain chain) throws IOException, ServletException {
+//        try {  
+//            logger.info("Starting a database transaction");  
+//            utx.begin();
+//  
+//            // Call the next filter (continue request processing)  
+//            chain.doFilter(request, response);  
+//  
+//            // Commit and cleanup  
+//            logger.info("Committing the database transaction");  
+//            utx.commit();  
+//  
+//        } catch (Throwable ex) {  
+//            // Rollback only  
+//            ex.printStackTrace();  
+//            try {  
+//                
+//                if (utx.getStatus() == 0) {  
+//                    logger.info("Trying to rollback database transaction after exception");  
+//                    utx.rollback();  
+//                }  
+//            } catch (Throwable rbEx) {  
+//                logger.warning("Could not rollback transaction after exception!" + rbEx);
+//            }  
+//  
+//            // Let others handle it... maybe another interceptor for exceptions?  
+//            throw new ServletException(ex);  
+//        }  
+//
+//    }
+//
+//    @Override
+//    public void init(FilterConfig arg0) throws ServletException {
+//
+//    }
+//}
+

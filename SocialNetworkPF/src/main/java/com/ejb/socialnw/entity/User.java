@@ -17,6 +17,8 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import com.ejb.socialnw.entity.message.Comment;
 import com.ejb.socialnw.entity.message.Message;
@@ -59,6 +61,7 @@ public class User extends BaseEntity implements Serializable {
     private String email;
 
     @Column(name = "dateOfBirth", nullable = false)
+    @Temporal(TemporalType.DATE)
     private Date dateOfBirth;
 
     @Column
@@ -81,7 +84,7 @@ public class User extends BaseEntity implements Serializable {
     private List<Comment> comments;
 
     @OneToMany(targetEntity = MyFriends.class, mappedBy = "me", orphanRemoval = true, cascade = {
-            CascadeType.MERGE, CascadeType.REMOVE }, fetch = FetchType.EAGER)
+            CascadeType.MERGE, CascadeType.REMOVE }, fetch = FetchType.LAZY)
     private List<MyFriends> myFriends;
 
     @OneToMany(targetEntity = MyFriends.class, mappedBy = "myFriend", orphanRemoval = true, cascade = {

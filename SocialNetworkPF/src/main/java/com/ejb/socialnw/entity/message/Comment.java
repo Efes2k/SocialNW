@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import com.ejb.socialnw.entity.BaseEntity;
 import com.ejb.socialnw.entity.User;
@@ -27,6 +29,7 @@ public class Comment extends BaseEntity {
     private String text;
 
     @Column()
+    @Temporal(TemporalType.TIMESTAMP)
     private Date date;
 
     @ManyToOne(optional = false)

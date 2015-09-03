@@ -14,6 +14,8 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import com.ejb.socialnw.entity.BaseEntity;
 import com.ejb.socialnw.entity.Media;
@@ -47,6 +49,7 @@ public class Message extends BaseEntity {
     private String type;
 
     @Column
+    @Temporal(TemporalType.TIMESTAMP)
     private Date date;
 
     @ManyToOne
@@ -60,8 +63,7 @@ public class Message extends BaseEntity {
     @JoinColumn(name = "where_id")
     private User where;
 
-    @OneToMany(mappedBy = "messageWhere", cascade = { CascadeType.REMOVE,
-            CascadeType.MERGE }, fetch = FetchType.EAGER, orphanRemoval = true)
+    @OneToMany(mappedBy = "messageWhere", cascade = { CascadeType.REMOVE, CascadeType.MERGE }, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<Comment> comments;
 
     /**
