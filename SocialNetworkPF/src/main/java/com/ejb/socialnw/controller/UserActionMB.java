@@ -157,7 +157,6 @@ public class UserActionMB implements Serializable {
         if(file != null) {
         	storeImage();
         }
-    	logger.log(Level.INFO, "Message ({0}) was added#" + DateUtility.getCurrentDateTime(), message.getText());
     	message.setDate(new Date());
         messageServ.create(message);
         message = new Message();

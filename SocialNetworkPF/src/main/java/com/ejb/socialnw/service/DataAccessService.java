@@ -4,12 +4,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.interceptor.ExcludeClassInterceptors;
+import javax.interceptor.Interceptors;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.transaction.Transactional;
 
 import com.ejb.socialnw.entity.User;
+import com.ejb.socialnw.util.LoggingInterceptor;
+
 
 /**
  * Implementation of the generic Data Access Service All CRUD (create, read,
@@ -19,6 +23,7 @@ import com.ejb.socialnw.entity.User;
  * @author Andrei Bykov
  */
 @Transactional
+@Interceptors(LoggingInterceptor.class)
 public abstract class DataAccessService<T> {
 
     @PersistenceContext
@@ -62,6 +67,7 @@ public abstract class DataAccessService<T> {
      * @param id
      * @return
      */
+    @ExcludeClassInterceptors
     public T find(Object id) {
         return this.em.find(this.type, id);
     }
@@ -122,6 +128,7 @@ public abstract class DataAccessService<T> {
      * @param namedQueryName
      * @return List
      */
+    @ExcludeClassInterceptors
     public List findWithNamedQuery(String namedQueryName) {
         return this.em.createNamedQuery(namedQueryName).getResultList();
     }
@@ -133,6 +140,7 @@ public abstract class DataAccessService<T> {
      * @param parameters
      * @return List
      */
+    @ExcludeClassInterceptors
     public List findWithNamedQuery(String namedQueryName, Map parameters) {
         return findWithNamedQuery(namedQueryName, parameters, 0);
     }
@@ -144,6 +152,7 @@ public abstract class DataAccessService<T> {
      * @param resultLimit
      * @return List
      */
+    @ExcludeClassInterceptors
     public List findWithNamedQuery(String queryName, int resultLimit) {
         return this.em.createNamedQuery(queryName).setMaxResults(resultLimit)
                 .getResultList();
@@ -182,6 +191,7 @@ public abstract class DataAccessService<T> {
      * @param resultLimit
      * @return List
      */
+    @ExcludeClassInterceptors
     public List findWithNamedQuery(String namedQueryName, Map parameters,
             int resultLimit) {
         Set<Map.Entry<String, Object>> rawParameters = parameters.entrySet();
@@ -204,6 +214,7 @@ public abstract class DataAccessService<T> {
      * @param end
      * @return List
      */
+    @ExcludeClassInterceptors
     public List findWithNamedQuery(String namedQueryName, int start, int end) {
         Query query = this.em.createNamedQuery(namedQueryName);
 
@@ -221,6 +232,7 @@ public abstract class DataAccessService<T> {
      * @param end
      * @return List
      */
+    @ExcludeClassInterceptors
     public List findWithNamedQuery(String namedQueryName, Map parameters,
             int start, int end) {
         Set<Map.Entry<String, Object>> rawParameters = parameters.entrySet();

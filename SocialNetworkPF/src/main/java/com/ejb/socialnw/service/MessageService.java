@@ -1,8 +1,10 @@
 package com.ejb.socialnw.service;
 
 import javax.ejb.Stateless;
+import javax.interceptor.Interceptors;
 
 import com.ejb.socialnw.entity.message.Message;
+import com.ejb.socialnw.util.LoggingInterceptor;
 
 /**
  * All CRUD (create, read, update, delete) basic data access operations for
@@ -12,6 +14,7 @@ import com.ejb.socialnw.entity.message.Message;
  */
 
 @Stateless
+
 public class MessageService extends DataAccessService<Message> {
 
     public MessageService() {

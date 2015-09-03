@@ -1,7 +1,6 @@
 package com.ejb.socialnw.controller;
 
 import java.io.ByteArrayInputStream;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -15,7 +14,6 @@ import org.primefaces.model.StreamedContent;
 
 import com.ejb.socialnw.entity.Media;
 import com.ejb.socialnw.service.MediaService;
-import com.ejb.socialnw.util.DateUtility;
 
 /**
  * Controller for dynamically streaming image content from database
@@ -45,7 +43,6 @@ public class ImageStreamerMB {
             // Browser is requesting the image. Return a real StreamedContent with the image bytes.
             String imageId = context.getExternalContext().getRequestParameterMap().get("id");
             Media media = mediaServ.find(Integer.valueOf(imageId));
-            logger.log(Level.INFO, "Finded media ({0}) in #" + DateUtility.getCurrentDateTime(), media.getId());
             return new DefaultStreamedContent(new ByteArrayInputStream(media.getMedia()));
         }
     }
