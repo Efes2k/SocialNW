@@ -37,7 +37,7 @@ import com.ejb.socialnw.entity.message.Message;
         @NamedQuery(name = User.ALL, query = "SELECT u FROM User u  "),
         @NamedQuery(name = User.FIND_BY_NAME, query = "SELECT u FROM User u WHERE u.username = :username"),
         @NamedQuery(name = User.TOTAL, query = "SELECT COUNT(u) FROM User u") })
-@Table(name = "user")
+@Table(name = "app_user")
 public class User extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = -1875388806547925724L;

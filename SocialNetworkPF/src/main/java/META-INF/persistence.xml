@@ -5,7 +5,9 @@
     <persistence-unit name="example" transaction-type="JTA">
          
         <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
-        <jta-data-source>java:/socialnwMySQL</jta-data-source>
+        
+        <jta-data-source>java:/socialnwOracle</jta-data-source>
+        
         <class>com.ejb.socialnw.entity.location.Country</class>
         <class>com.ejb.socialnw.entity.location.City</class>
         <class>com.ejb.socialnw.entity.Address</class>
@@ -16,6 +18,7 @@
         <class>com.ejb.socialnw.entity.User</class>
         <class>com.ejb.socialnw.entity.message.Comment</class>
         <class>com.ejb.socialnw.entity.message.Message</class>
+        
          <properties>
             <!-- Hibernate -->
             <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" />
@@ -26,14 +29,12 @@
             <property name="eclipselink.ddl-generation" value="create-tables" />
             <property name="eclipselink.ddl-generation.output-mode" value="database" />
             <property name="eclipselink.target-server" value="JBoss"/>  
-            <property name="eclipselink.cache.shared.default" value="false"/>
-            <property name="eclipselink.logging.level.sql" value="FINE"/>
+            <property name="eclipselink.logging.level.sql" value="FINEST"/>
             <property name="eclipselink.logging.parameters" value="true"/>
+            <property name="eclipselink.cache.shared.default" value="false"/>
            
             <!-- OpenJPA -->
             <property name="openjpa.jdbc.SynchronizeMappings" value="buildSchema(ForeignKeys=true)"/>
-            
-            
              
         </properties>
     </persistence-unit>

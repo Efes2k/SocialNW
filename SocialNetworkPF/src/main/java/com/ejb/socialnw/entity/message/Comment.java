@@ -20,7 +20,7 @@ import com.ejb.socialnw.entity.User;
  */
 
 @Entity
-@Table(name = "comment")
+@Table(name = "app_comment")
 public class Comment extends BaseEntity {
 
     private static final long serialVersionUID = -4569666641567788369L;
@@ -28,12 +28,12 @@ public class Comment extends BaseEntity {
     @Column(length = 200)
     private String text;
 
-    @Column()
+    @Column(name = "app_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date date;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "app_user_id")
     private User author;
 
     @ManyToOne(optional = false)

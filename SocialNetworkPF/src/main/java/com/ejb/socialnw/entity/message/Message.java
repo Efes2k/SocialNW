@@ -28,12 +28,12 @@ import com.ejb.socialnw.entity.User;
  */
 
 @Entity
+@Table(name = "app_message")
 @NamedQueries({
         @NamedQuery(name = Message.ALL, query = "SELECT m FROM Message m "),
         @NamedQuery(name = Message.FIND_BY_ID, query = "SELECT m FROM Message m INNER JOIN m.where u where u.id = :id ORDER BY m.date DESC"),
         @NamedQuery(name = Message.FIND_BY_OWNER, query = "SELECT m FROM Message m INNER JOIN m.owner u INNER JOIN m.media med  WHERE u.id = :id AND med.media IS NOT NULL ORDER BY m.date DESC"),
         @NamedQuery(name = Message.TOTAL, query = "SELECT COUNT(m) FROM Message m") })
-@Table(name = "message")
 public class Message extends BaseEntity {
 
     private static final long serialVersionUID = -3104933723895657000L;
@@ -48,12 +48,12 @@ public class Message extends BaseEntity {
     @Column(length = 20)
     private String type;
 
-    @Column
+    @Column(name = "app_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date date;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "app_user_id")
     private User owner;
 
     @OneToOne(cascade = { CascadeType.ALL })
