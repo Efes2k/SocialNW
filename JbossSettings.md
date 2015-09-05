@@ -66,7 +66,7 @@
                         
 `<module-option name="dsJndiName" value="java:/socialnwMySQL"/>`
                            
-`<module-option name="principalsQuery" value="select password from user where username = ?"/>`
+`<module-option name="principalsQuery" value="select password from app_user where username = ?"/>`
                             
 `<module-option name="rolesQuery" value="SELECT r.ROLEdesc, 'Roles' FROM ROLE r, USER_ROLES ur, USER u WHERE u.USERNAME =? AND u.ID=ur.USER_USERID AND ur.ROLE_ROLEID=r.ID"/>`
                             
