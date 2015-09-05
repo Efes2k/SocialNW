@@ -9,9 +9,8 @@ Here we walk through the entire content of the application.
 
 - Maven for dependency management.
 - EJB, JSF, Primefaces.
-- MySQL database.
-- JPA for working with DB.
-- Logger log4j.
+- Oracle database.
+- JPA(EclipseLink, Hibernate) for working with DB.
 - JBoss Wildfly 8.2.0
 
 **Functionality:**
