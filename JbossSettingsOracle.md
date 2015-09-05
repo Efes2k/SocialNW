@@ -1,8 +1,29 @@
 # Jboss configuration
  
  We need to tell jBoss application server that we are going to use this database for JDBCRealm purpose. 
- You would place mysql connector jar into library of web application on path
- `<jboss_home>`\modules\system\layers\base\com\mysql\main and put file module.xml
+ You would place oracle connector jar into library of web application on path
+ `<jboss_home>`\modules\system\layers\base\com\oracle\main and put file module.xml with:
+ 
+`<module xmlns="urn:jboss:module:1.1" name="com.oracle">`
+
+`<resources>`
+ 
+`<resource-root path="ojdbc7.jar"/>`
+ 
+`</resources>`
+  
+`<dependencies>`
+  
+`<module name="javax.api"/>`
+
+`<module name="javax.transaction.api"/>`
+    
+`<module name="javax.servlet.api" optional="true"/>`
+	 
+`</dependencies>`
+  
+`</module>`
+ 
  
 **Configure module in standalone.xml**
 
@@ -42,7 +63,7 @@
 
 
   - jndi name is the identifier we are going to use in our security configuration.
-  - jdbc:mysql://localhost:3306/soscialnw_db is our database to which jndi name points.
+  - jdbc:oracle:thin:@localhost:1521:xe is our database to which jndi name points.
 
 2) **Configure jdbc driver using previously created module. Add following into drivers tag in standalone.xml**
 
@@ -58,7 +79,7 @@
                    
 `<login-module code="org.jboss.security.auth.spi.DatabaseServerLoginModule" flag="required">`
                         
-`<module-option name="dsJndiName" value="java:/socialnwMySQL"/>`
+`<module-option name="dsJndiName" value="java:/socialnwOracle"/>`
                            
 `<module-option name="principalsQuery" value="select password from app_user where username = ?"/>`
                             
