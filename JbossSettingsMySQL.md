@@ -2,7 +2,28 @@
  
  We need to tell jBoss application server that we are going to use this database for JDBCRealm purpose. 
  You would place mysql connector jar into library of web application on path
- `<jboss_home>`\modules\system\layers\base\com\mysql\main and put file module.xml
+ `<jboss_home>`\modules\system\layers\base\com\mysql\main and put file module.xml with:
+ 
+ `<module xmlns="urn:jboss:module:1.1" name="com.mysql">`
+
+`<resources>`
+
+`<resource-root path="mysql-connector-java-5.1.6.jar"/>`
+
+`</resources>`
+
+`<dependencies>`
+
+`<module name="javax.api"/>`
+
+`<module name="javax.transaction.api"/>`
+
+`<module name="javax.servlet.api" optional="true"/>`
+
+`</dependencies>`
+
+`</module>`
+ 
  
 **Configure module in standalone.xml**
 
