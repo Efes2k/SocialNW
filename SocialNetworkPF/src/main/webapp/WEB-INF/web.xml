@@ -60,7 +60,7 @@
 	</security-constraint>
 	<login-config>
 		<auth-method>FORM</auth-method>
-		<realm-name>socialnwMySQLRealm</realm-name>
+		<realm-name>socialnwOracle</realm-name>
 		<form-login-config>
 			<form-login-page>/Login.xhtml</form-login-page>
 			<form-error-page>/Login.xhtml</form-error-page>
