@@ -99,7 +99,6 @@ public class UserRegistrationMB implements Serializable {
      * @deprecated
      */
     @SuppressWarnings("unchecked")
-    @Deprecated
     private List<Role> getUserRoles() {
         return userServ.findWithNamedQuery(Role.LIST_NAMED);
     }

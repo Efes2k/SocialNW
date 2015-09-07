@@ -159,7 +159,6 @@ public class UserActionMB implements Serializable {
         }
     	message.setDate(new Date());
         messageServ.create(message);
-        message = new Message();
         file = null;
     }
     

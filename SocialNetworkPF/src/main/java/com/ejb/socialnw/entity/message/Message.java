@@ -63,7 +63,7 @@ public class Message extends BaseEntity {
     @JoinColumn(name = "where_id")
     private User where;
 
-    @OneToMany(mappedBy = "messageWhere", cascade = { CascadeType.REMOVE, CascadeType.MERGE }, fetch = FetchType.LAZY, orphanRemoval = true)
+    @OneToMany(mappedBy = "messageWhere", cascade = { CascadeType.REMOVE, CascadeType.MERGE }, orphanRemoval = true)
     private List<Comment> comments;
 
     /**

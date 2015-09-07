@@ -73,22 +73,19 @@ public class User extends BaseEntity implements Serializable {
     @OneToOne(cascade = { CascadeType.ALL })
     private Media avatar;
 
-    @OneToMany(mappedBy = "owner", cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "owner", cascade = { CascadeType.ALL })
     private List<Message> messages;
 
-    @OneToMany(mappedBy = "where", cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "where", cascade = { CascadeType.ALL })
     private List<Message> messagesWhere;
 
-    @OneToMany(mappedBy = "author", cascade = { CascadeType.MERGE,
-            CascadeType.REMOVE }, orphanRemoval = true)
+    @OneToMany(mappedBy = "author", cascade = { CascadeType.MERGE, CascadeType.REMOVE }, orphanRemoval = true)
     private List<Comment> comments;
 
-    @OneToMany(targetEntity = MyFriends.class, mappedBy = "me", orphanRemoval = true, cascade = {
-            CascadeType.MERGE, CascadeType.REMOVE }, fetch = FetchType.LAZY)
+    @OneToMany(targetEntity = MyFriends.class, mappedBy = "me", orphanRemoval = true, cascade = {CascadeType.MERGE, CascadeType.REMOVE })
     private List<MyFriends> myFriends;
 
-    @OneToMany(targetEntity = MyFriends.class, mappedBy = "myFriend", orphanRemoval = true, cascade = {
-            CascadeType.MERGE, CascadeType.REMOVE }, fetch = FetchType.LAZY)
+    @OneToMany(targetEntity = MyFriends.class, mappedBy = "myFriend", orphanRemoval = true, cascade = {CascadeType.MERGE, CascadeType.REMOVE })
     private List<MyFriends> iAmFriendOf;
 
     @ManyToMany
