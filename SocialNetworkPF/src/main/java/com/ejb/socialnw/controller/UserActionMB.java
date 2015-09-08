@@ -121,7 +121,7 @@ public class UserActionMB implements Serializable {
 	 /**
      * Create a new comment on message
      */
-    public void doCreateComment(String value,Message messageWhere){
+    public void doCreateComment(Message messageWhere){
 	    comment.setAuthor(userServ.find(user.getId()));
 	    comment.setMessageWhere(messageWhere);
 	    comment.setText(commentList.get(messageWhere.getId()));
@@ -159,6 +159,7 @@ public class UserActionMB implements Serializable {
         }
     	message.setDate(new Date());
         messageServ.create(message);
+        message = new Message();
         file = null;
     }
     

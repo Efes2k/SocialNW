@@ -208,7 +208,7 @@
 															     type="submit"
 																 ajax="true"
 																 icon="ui-icon-check"
-																 action = "#{userActionMB.doCreateComment(input1.value,message)}"
+																 actionListener = "#{userActionMB.doCreateComment(message)}"
 																 update=":messages:dataTable">
 	
 												 <f:ajax render=":dataTable" execute="@form"  />
